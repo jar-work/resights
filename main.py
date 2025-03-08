@@ -12,7 +12,7 @@ file = 'data/' + company + '.json'
 
 try:
     with open(file, 'r') as f:
-        graph = generate_graph(json.load(f), companyFullName)
+        graph = generate_graph(json.load(f))
 except FileNotFoundError:
     print(f"File not found {file}")
     sys.exit(1)
