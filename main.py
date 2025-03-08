@@ -1,18 +1,14 @@
 import json
 import sys
-from graph import generate_graph
+from graph import generate_graph, print_ownership_structure
 
-if len(sys.argv) < 2:
-    print("Usage: python main.py <company>")
-    sys.exit(1)
-
-companyFullName = ' '.join(sys.argv[1:])
-company = ''.join(sys.argv[1:])
-file = 'data/' + company + '.json'
+source = 'Michael Antitsch Mortensen'
+file = 'data/ResightsApS.json'
 
 try:
     with open(file, 'r') as f:
         graph = generate_graph(json.load(f))
+        print_ownership_structure(graph, source)
 except FileNotFoundError:
     print(f"File not found {file}")
     sys.exit(1)
