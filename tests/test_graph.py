@@ -10,8 +10,8 @@ class TestGetShareValues(unittest.TestCase):
         self.assertEqual(get_share_values('<5%'), [0, 0.025, 0.05])
 
     def test_print_ownership(self):
-        self.assertEqual(get_ownership_description('Alice', 0.2, 0.4, 0.6, 'Bob'), 'Alice owns 20-60% of Bob')
-        self.assertEqual(get_ownership_description('Alice', 0.2, 0.2, 0.2, 'Bob'), 'Alice owns 20% of Bob')
-        self.assertEqual(get_ownership_description('Alice', 0, 0.025, 0.05, 'Bob'), 'Alice owns <5% of Bob')
+        self.assertEqual(get_ownership_description('Alice', 0.2, 0.4, 0.6, 'Bob'), 'Alice owns 20.00-60.00% of Bob')
+        self.assertEqual(get_ownership_description('Alice', 0.2, 0.2, 0.2, 'Bob'), 'Alice owns 20.00% of Bob')
+        self.assertEqual(get_ownership_description('Alice', 0, 0.025, 0.05, 'Bob'), 'Alice owns <5.00% of Bob')
 
 

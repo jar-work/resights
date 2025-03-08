@@ -46,14 +46,14 @@ def get_share_values(value):
 def get_ownership_description(source_name, lower_ownership, middle_ownership, upper_ownership, target_name):
     # if the three ownership values are equal, return the exact percentage
     if lower_ownership == middle_ownership and middle_ownership == upper_ownership:
-        return f"{source_name} owns {middle_ownership * 100:.0f}% of {target_name}"
+        return f"{source_name} owns {middle_ownership * 100:.2f}% of {target_name}"
 
     # if the lower_ownership is zero, return the upper_ownership percentage as <
     if lower_ownership == 0:
-        return f"{source_name} owns <{upper_ownership * 100:.0f}% of {target_name}"
+        return f"{source_name} owns <{upper_ownership * 100:.2f}% of {target_name}"
 
     # return the range between lower_ownership and upper_ownership
-    return f"{source_name} owns {lower_ownership * 100:.0f}-{upper_ownership * 100:.0f}% of {target_name}"
+    return f"{source_name} owns {lower_ownership * 100:.2f}-{upper_ownership * 100:.2f}% of {target_name}"
 
 
 def print_ownership_structure(graph, source):

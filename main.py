@@ -2,8 +2,8 @@ import json
 import sys
 from graph import generate_graph, print_ownership_structure
 
-source = 'Michael Antitsch Mortensen'
-file = 'data/ResightsApS.json'
+source = 'A.P. MØLLER OG HUSTRU CHASTINE MC-KINNEY MØLLERS FOND TIL ALMENE FORMAAL'
+file = 'data/CasaAS.json'
 
 try:
     with open(file, 'r') as f:
