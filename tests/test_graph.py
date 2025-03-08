@@ -1,4 +1,3 @@
-import sys
 import unittest
 from graph import get_share_values, get_ownership_description
 
