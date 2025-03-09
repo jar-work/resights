@@ -2,13 +2,14 @@ import json
 import sys
 from graph import generate_graph, print_ownership_structure
 
-source = 'A.P. MØLLER OG HUSTRU CHASTINE MC-KINNEY MØLLERS FOND TIL ALMENE FORMAAL'
+source = 'DANSK METALARBEJDERFORBUND'
+target = 'CASA Skråningen 2 A/S'
 file = 'data/CasaAS.json'
 
 try:
     with open(file, 'r') as f:
         graph = generate_graph(json.load(f))
-        print_ownership_structure(graph, source)
+        print_ownership_structure(graph, source, target)
 except FileNotFoundError:
     print(f"File not found {file}")
     sys.exit(1)
