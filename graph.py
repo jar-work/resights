@@ -1,5 +1,9 @@
 import networkx as nx
-from colorama import Fore, Back, Style, init
+from enum import Enum, auto
+
+class Direction(Enum):
+    FROM = auto()
+    TO = auto()
 
 def generate_graph(data):
     graph = nx.DiGraph()
@@ -57,23 +61,26 @@ def get_ownership_description(source_name, lower_ownership, middle_ownership, up
     return f"{source_name} owns {lower_ownership * 100:.2f}-{upper_ownership * 100:.2f}% of {target_name}"
 
 
-def print_ownership_structure(graph, source = None, target = None):
+def get_ownership_structure(graph, node_to_check, direction: Direction):
     # find the node with depth = 0
-    focus_node = next(node for node, data in graph.nodes(data=True) if data['depth'] == 0)
-    focus_node_name = graph.nodes[focus_node]['name']
+    company_node = next(node for node, data in graph.nodes(data=True) if data['depth'] == 0)
+    from_node = None
+    to_node = None
 
-    if source:
-        print(Fore.GREEN + Back.BLACK + f"Ownership structure from {source} to {focus_node_name}:" + Style.RESET_ALL)
-        source_node = next(node for node, data in graph.nodes(data=True) if data['name'] == source)
-        path = nx.shortest_path(graph, source_node, focus_node)
-        calculate_print_total_ownership(graph, path, source, focus_node)
+    # if the node_to_check is not in the graph, return an empty generator
+    if not any(data['name'] == node_to_check for _, data in graph.nodes(data=True)):
+        yield "Not found in the graph"
+        return
 
-    if target:
-        print(Fore.GREEN + Back.BLACK + f"Ownership structure from {focus_node_name} to {target}:" + Style.RESET_ALL)
-        target_node = next(node for node, data in graph.nodes(data=True) if data['name'] == target)
-        path = nx.shortest_path(graph, focus_node, target_node)
-        calculate_print_total_ownership(graph, path, focus_node_name, target_node)
+    if direction == Direction.FROM:
+        from_node = next(node for node, data in graph.nodes(data=True) if data['name'] == node_to_check)
+        to_node = company_node
+    if direction == Direction.TO:
+        from_node = company_node
+        to_node = next(node for node, data in graph.nodes(data=True) if data['name'] == node_to_check)
 
+    path = nx.shortest_path(graph, from_node, to_node)
+    yield from calculate_print_total_ownership(graph, path, from_node, to_node)
 
 def calculate_print_total_ownership(graph, path, source, target):
     total_lower_ownership = 1
@@ -91,7 +98,7 @@ def calculate_print_total_ownership(graph, path, source, target):
         total_middle_ownership *= middle_share
         total_upper_ownership *= upper_share
 
-        print(get_ownership_description(source_name, lower_share, middle_share, upper_share, target_name))
+        yield get_ownership_description(source_name, lower_share, middle_share, upper_share, target_name)
 
-    print(get_ownership_description(source, total_lower_ownership, total_middle_ownership, total_upper_ownership, graph.nodes[target]['name']))
+    yield f" --> {get_ownership_description(graph.nodes[source]['name'], total_lower_ownership, total_middle_ownership, total_upper_ownership, graph.nodes[target]['name'])}"
 
