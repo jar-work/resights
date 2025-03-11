@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resights-api
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resights-api
+  template:
+    metadata:
+      labels:
+        app: resights-api
+    spec:
+      imagePullSecrets:
+        - name: gcr-json-key
+      containers:
+        - name: admin-api
+          image: {{ .Values.resightsapi.image }}
+          ports:
+            - containerPort: 8080

@@ -1,0 +1,5 @@
+tests/
+.ropeproject/
+.venv/
+__pycache__/
+.gitignore
