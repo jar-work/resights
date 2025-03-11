@@ -1,2 +1,2 @@
 resightsapi:
-  image: southamerica-west1-docker.pkg.dev/sofia-423417/sofia/resights-api:250301.2
+  image: southamerica-west1-docker.pkg.dev/sofia-423417/sofia/resights-api:250311.1
