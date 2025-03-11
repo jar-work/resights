@@ -1,5 +1,6 @@
 import unittest
-from graph import EdgeInformation
+
+from models.edge_information import EdgeInformation
 
 class TestGetShareValues(unittest.TestCase):
     def test_get_share_values(self):
