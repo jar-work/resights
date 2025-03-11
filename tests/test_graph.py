@@ -1,16 +1,38 @@
 import unittest
-from graph import get_share_values, get_ownership_description
+from graph import EdgeInformation
 
 class TestGetShareValues(unittest.TestCase):
     def test_get_share_values(self):
-        self.assertEqual(get_share_values('100%'), [1, 1, 1])
-        self.assertEqual(get_share_values('50%'), [0.5, 0.5, 0.5])
-        self.assertEqual(get_share_values('33%'), [0.33, 0.33, 0.33])
-        self.assertEqual(get_share_values('<5%'), [0, 0.025, 0.05])
+        edge_information = EdgeInformation('100%')
+        self.assertEqual(edge_information.lower_ownership, 1)
+        self.assertEqual(edge_information.middle_ownership, 1)
+        self.assertEqual(edge_information.upper_ownership, 1)
+
+        edge_information = EdgeInformation('50%')
+        self.assertEqual(edge_information.lower_ownership, 0.5)
+        self.assertEqual(edge_information.middle_ownership, 0.5)
+        self.assertEqual(edge_information.upper_ownership, 0.5)
+
+        edge_information = EdgeInformation('30-40%')
+        self.assertEqual(edge_information.lower_ownership, 0.3)
+        self.assertEqual(edge_information.middle_ownership, 0.35)
+        self.assertEqual(edge_information.upper_ownership, 0.4)
+
+        edge_information = EdgeInformation('<70%')
+        self.assertEqual(edge_information.lower_ownership, 0)
+        self.assertEqual(edge_information.middle_ownership, 0.35)
+        self.assertEqual(edge_information.upper_ownership, 0.7)
 
     def test_print_ownership(self):
-        self.assertEqual(get_ownership_description('Alice', 0.2, 0.4, 0.6, 'Bob'), 'Alice owns 20.00-60.00% of Bob')
-        self.assertEqual(get_ownership_description('Alice', 0.2, 0.2, 0.2, 'Bob'), 'Alice owns 20.00% of Bob')
-        self.assertEqual(get_ownership_description('Alice', 0, 0.025, 0.05, 'Bob'), 'Alice owns <5.00% of Bob')
+        edge_information = EdgeInformation('20-60%')
+        self.assertEqual(edge_information.get_ownership_value(), '20-60%')
 
+        edge_information = EdgeInformation('20%')
+        self.assertEqual(edge_information.get_ownership_value(), '20%')
 
+        edge_information = EdgeInformation('<11%')
+        self.assertEqual(edge_information.get_ownership_value(), '<11%')
+
+        # less than 10% we show two decimals
+        edge_information = EdgeInformation('<10%')
+        self.assertEqual(edge_information.get_ownership_value(), '<10.00%')
